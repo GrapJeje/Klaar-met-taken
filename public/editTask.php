@@ -87,6 +87,15 @@ class editTask
                             <label for="task_deadline">Deadline</label>
                             <input type="date" name="task_deadline" id="task_deadline" value="<?php echo $editTask->getTask()->deadline; ?>" required>
                         </div>
+                        <div class="form-group">
+                            <label for="task_status">Status</label>
+                            <select name="task_status" id="task_status" required>
+                                <option value="NotStarted" <?php echo ($editTask->getTask()->status === 'NotStarted' ? 'selected' : ''); ?>>Niet gestart</option>
+                                <option value="InProgress" <?php echo ($editTask->getTask()->status === 'InProgress' ? 'selected' : ''); ?>>In uitvoering</option>
+                                <option value="Completed" <?php echo ($editTask->getTask()->status === 'Completed' ? 'selected' : ''); ?>>Voltooid</option>
+                                <option value="OnHold" <?php echo ($editTask->getTask()->status === 'OnHold' ? 'selected' : ''); ?>>In de wacht</option>
+                            </select>
+                        </div>
                     </div>
 
                     <button type="submit" name="action" value="edit">Bewerken</button>
@@ -98,13 +107,13 @@ class editTask
             </div>
 
         <?php } else { ?>
-        <div class="task-not-found">
-            <p><strong>Taak niet gevonden</strong></p>
-            <p>De taak die je probeert te bewerken bestaat niet. Controleer de gegevens en probeer het opnieuw.</p>
-            <div class="back-button">
-                <a href="../public/index.php"><button type="button">Terug naar Overzicht</button></a>
+            <div class="task-not-found">
+                <p><strong>Taak niet gevonden</strong></p>
+                <p>De taak die je probeert te bewerken bestaat niet. Controleer de gegevens en probeer het opnieuw.</p>
+                <div class="back-button">
+                    <a href="../public/index.php"><button type="button">Terug naar Overzicht</button></a>
+                </div>
             </div>
-        </div>
         <?php } ?>
     </main>
 

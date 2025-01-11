@@ -22,12 +22,36 @@
     flex: 1;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1rem;
+    background-color: white;
+    transition: border-color 0.3s ease;
+}
+
+.form-group select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #fff;
+    background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2014%2014%22%3E%3Cpath%20fill%3D%22%23ccc%22%20d%3D%22M7%2C9L10%2C6H4Z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+.form-group select:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.form-group select {
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 button {
@@ -74,8 +98,15 @@ button:hover {
         flex-direction: column;
     }
 
-    .form-group input {
+    .form-group input,
+    .form-group select {
         font-size: 0.9rem;
+    }
+   
+    .form-group select {
+        font-size: 0.9rem;
+        padding: 10px 15px;
+        max-height: 200px;
     }
 
     button {
@@ -93,9 +124,14 @@ button:hover {
         font-size: 1.3rem;
     }
 
-    .form-group input {
+    .form-group input,
+    .form-group select {
         font-size: 0.9rem;
         padding: 8px;
+    }
+
+    .form-group select {
+        max-height: 150px;
     }
 
     button {

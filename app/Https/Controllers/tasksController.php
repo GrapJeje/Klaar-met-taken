@@ -42,12 +42,6 @@ class TasksController
                         <td>
                             <form method=\"POST\" action=\"../app/Https/Controllers/editTaskController.php\" class=\"action-buttons-form\">
                                 <input type=\"hidden\" name=\"task_id\" value=\"{$task['id']}\">
-                                <select name=\"task_status\" class=\"status-dropdown\">
-                                    <option value=\"NotStarted\" " . ($task['status'] === 'NotStarted' ? 'selected' : '') . ">Niet gestart</option>
-                                    <option value=\"InProgress\" " . ($task['status'] === 'InProgress' ? 'selected' : '') . ">In uitvoering</option>
-                                    <option value=\"Completed\" " . ($task['status'] === 'Completed' ? 'selected' : '') . ">Voltooid</option>
-                                    <option value=\"OnHold\" " . ($task['status'] === 'OnHold' ? 'selected' : '') . ">In de wacht</option>
-                                </select>
                                 <button type=\"submit\" name=\"action\" value=\"edit\" class=\"edit-btn\">Bewerken</button>
                                 <button type=\"submit\" name=\"action\" value=\"delete\" class=\"delete-btn\">Verwijderen</button>
                             </form>
