@@ -4,12 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaakTrekker</title>
+    <title>Klaar met taken</title>
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
 <body>
-    <?php require_once('../../../../config/php/config.php'); ?>
+    <?php 
+        require_once('../../../../config/php/config.php');
+        require_once __DIR__ . '/../vendor/autoload.php';
+    ?>
 
     <header>
         <h1>Klaar met taken</h1>

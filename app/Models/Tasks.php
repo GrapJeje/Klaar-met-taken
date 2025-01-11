@@ -1,5 +1,7 @@
 <?php
 
+use League\Csv\Writer;
+
 class Tasks
 {
     public $id;
@@ -73,27 +75,22 @@ class Tasks
 
     public function save()
     {
-        $tasks = self::getTasks();
+        require_once __DIR__ . '/../../vendor/autoload.php';
+
         $newTask = [
-            'id' => $this->getId(),
-            'task' => $this->getTask(),
-            'description' => $this->getDescription(),
-            'deadline' => $this->getDeadline(),
-            'status' => $this->getStatus(),
+            "{$this->getId()}",
+            "{$this->getTask()}",
+            "{$this->getDescription()}",
+            "{$this->getDeadline()}",
+            "{$this->getStatus()->name}"
         ];
 
-        $tasks = array_filter($tasks, fn($task) => $task['id'] != $newTask['id']);
-        $tasks[] = $newTask;
+        $csvFilePath = __DIR__ . '/../../data/Tasks.csv';
 
-        if ($file = fopen(__DIR__ . "../../data/Tasks.csv", "w")) {
-            fputcsv($file, ['id', 'task', 'description', 'deadline', 'status']);
-            array_walk($tasks, fn($task) => fputcsv($file, $task));
-
-            fclose($file);
-        } else {
-            echo "<script>console.error('Het bestand \"tasks.csv\" kon niet worden geopend.');</script>";
-        }
+        $csv = Writer::createFromPath($csvFilePath, 'a');
+        $csv->insertOne($newTask);
     }
+
 
     public static function getNewId()
     {
@@ -130,7 +127,7 @@ class Tasks
         $task->setDescription(null);
         $task->setDeadline(null);
         $task->setStatus(null);
-        
+
         $task->save();
     }
 

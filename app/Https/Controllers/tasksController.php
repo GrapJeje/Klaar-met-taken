@@ -20,7 +20,7 @@ class TasksController
                 <tbody>
         ";
 
-        if (!empty($products)) {
+        if (!empty($tasks)) {
             foreach ($tasks as $task) {
                 echo "
                     <tr>
@@ -31,7 +31,12 @@ class TasksController
                         <td>
                             <form method=\"POST\" action=\"../app/Http/Controllers/editProductController.php\" class=\"action-buttons-form\">
                                 <input type=\"hidden\" name=\"product_id\" value=\"{$task['id']}\">
-                                <button type=\"submit\" name=\"action\" value=\"complete\" class=\"complete-btn\">Voltooien</button>
+                                <select name=\"task_status\" class=\"status-dropdown\">
+                                    <option value=\"NotStarted\" " . ($task['status'] === 'NotStarted' ? 'selected' : '') . ">Niet gestart</option>
+                                    <option value=\"InProgress\" " . ($task['status'] === 'InProgress' ? 'selected' : '') . ">In uitvoering</option>
+                                    <option value=\"Completed\" " . ($task['status'] === 'Completed' ? 'selected' : '') . ">Voltooid</option>
+                                    <option value=\"OnHold\" " . ($task['status'] === 'OnHold' ? 'selected' : '') . ">In de wacht</option>
+                                </select>
                                 <button type=\"submit\" name=\"action\" value=\"edit\" class=\"edit-btn\">Bewerken</button>
                                 <button type=\"submit\" name=\"action\" value=\"delete\" class=\"delete-btn\">Verwijderen</button>
                             </form>
@@ -52,8 +57,5 @@ class TasksController
         ";
     }
 
-    public static function newTask()
-    {
-        
-    }
+    public static function newTask() {}
 }

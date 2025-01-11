@@ -131,6 +131,29 @@ main {
     opacity: 0.8;
 }
 
+.status-dropdown {
+    padding: 5px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.update-status-btn {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    margin-left: 10px;
+}
+
+.update-status-btn:hover {
+    background-color: #45a049;
+}
+
 /* ================================ Mobielvriendelijk ================================ */
 
 /* Header aanpassingen */
