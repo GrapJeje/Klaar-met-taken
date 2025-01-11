@@ -15,18 +15,6 @@ switch ($action) {
         Tasks::deleteTask($id);
         header("Location " . __DIR__ . "/../../../public/index.php");
         break;
-    case "NotStarted":
-        //code block
-        break;
-    case "InProgress":
-        //code block
-        break;
-    case "Completed":
-        //code block
-        break;
-    case "OnHold":
-        //code block
-        break;
     default:
         header("Location " . __DIR__ . "/../../../public/index.php");
 }

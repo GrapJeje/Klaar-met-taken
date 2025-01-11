@@ -53,7 +53,7 @@ class TasksController
         } else {
             echo "
                 </tbody>
-                    <tr><td colspan='5'>Geen tasks gevonden!</td></tr>
+                    <tr><td colspan='5'>Geen taken gevonden!</td></tr>
             ";
         }
 
