@@ -74,33 +74,33 @@ class Tasks
     }
 
     public function save()
-{
-    require_once __DIR__ . '/../../vendor/autoload.php';
+    {
+        require_once __DIR__ . '/../../vendor/autoload.php';
 
-    $newTask = [
-        "{$this->getId()}",
-        "{$this->getTask()}",
-        "{$this->getDescription()}",
-        "{$this->getDeadline()}",
-        "{$this->getStatus()->name}"
-    ];
+        $newTask = [
+            "{$this->getId()}",
+            "{$this->getTask()}",
+            "{$this->getDescription()}",
+            "{$this->getDeadline()}",
+            "{$this->getStatus()->name}"
+        ];
 
-    $csvFilePath = __DIR__ . '/../../data/Tasks.csv';
-    $tasks = file_exists($csvFilePath) ? array_map('str_getcsv', file($csvFilePath)) : [];
+        $csvFilePath = __DIR__ . '/../../data/Tasks.csv';
+        $tasks = file_exists($csvFilePath) ? array_map('str_getcsv', file($csvFilePath)) : [];
 
-    $updated = false;
-    foreach ($tasks as &$task) {
-        if ($task[0] == $this->getId()) {
-            $task = $newTask;
-            $updated = true;
-            break;
+        $updated = false;
+        foreach ($tasks as &$task) {
+            if ($task[0] == $this->getId()) {
+                $task = $newTask;
+                $updated = true;
+                break;
+            }
         }
-    }
-    if (!$updated) $tasks[] = $newTask;
+        if (!$updated) $tasks[] = $newTask;
 
-    $csv = Writer::createFromPath($csvFilePath, 'w');
-    $csv->insertAll($tasks);
-}
+        $csv = Writer::createFromPath($csvFilePath, 'w');
+        $csv->insertAll($tasks);
+    }
 
     public static function getNewId()
     {
@@ -131,14 +131,19 @@ class Tasks
 
     public static function deleteTask($id)
     {
-        $task = new Tasks($id);
-        $task->setId(null);
-        $task->setTask(null);
-        $task->setDescription(null);
-        $task->setDeadline(null);
-        $task->setStatus(null);
+        require_once __DIR__ . '/../../vendor/autoload.php';
+        $tasks = self::getTasks();
 
-        $task->save();
+        $updatedTasks = array_filter($tasks, function ($task) use ($id) {
+            return $task['id'] != $id;
+        });
+
+        $updatedTasks = array_values($updatedTasks);
+        $csvFilePath = __DIR__ . "/../../data/Tasks.csv";
+        $csv = Writer::createFromPath($csvFilePath, 'w');
+
+        $csv->insertOne(['id', 'task', 'description', 'deadline', 'status']);
+        $csv->insertAll($updatedTasks);
     }
 
     public static function getTasks()

@@ -1,6 +1,7 @@
 <?php
 require_once(__DIR__ . '../../../../../../../config/php/config.php');
 require_once(__DIR__ . '/tasksController.php');
+require_once(__DIR__ . '/../../Models/Tasks.php');
 
 $action = $_POST['action'];
 $id = $_POST['task_id'];
@@ -11,7 +12,7 @@ switch ($action) {
         TasksController::editTask($id);
         break;
     case "delete":
-        Products::deleteProduct($id);
+        Tasks::deleteTask($id);
         header("Location " . __DIR__ . "/../../../public/index.php");
         break;
     case "NotStarted":
