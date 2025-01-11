@@ -4,6 +4,8 @@ class TasksController
 {
     public static function showTasks()
     {
+        require_once(__DIR__ . '/../../Models/Tasks.php');
+        require_once(__DIR__ . '/../../Models/Status.php');
         $tasks = Tasks::getTasks();
 
         echo "
@@ -22,15 +24,24 @@ class TasksController
 
         if (!empty($tasks)) {
             foreach ($tasks as $task) {
+                $deadline = date("d-m-Y", strtotime($task['deadline']));
+
+                $status = $task['status'];
+                $statusEnum = status::tryFrom($status);
+
+                if ($statusEnum === null) {
+                    $statusEnum = status::NotStarted;
+                }
+
                 echo "
                     <tr>
                         <td>{$task['task']}</td>
                         <td>{$task['description']}</td>
-                        <td>{$task['deadline']}</td>
-                        <td>{$task['status']}</td>
+                        <td>{$deadline}</td>
+                        <td>{$statusEnum->value}</td>
                         <td>
-                            <form method=\"POST\" action=\"../app/Http/Controllers/editProductController.php\" class=\"action-buttons-form\">
-                                <input type=\"hidden\" name=\"product_id\" value=\"{$task['id']}\">
+                            <form method=\"POST\" action=\"../app/Https/Controllers/editTaskController.php\" class=\"action-buttons-form\">
+                                <input type=\"hidden\" name=\"task_id\" value=\"{$task['id']}\">
                                 <select name=\"task_status\" class=\"status-dropdown\">
                                     <option value=\"NotStarted\" " . ($task['status'] === 'NotStarted' ? 'selected' : '') . ">Niet gestart</option>
                                     <option value=\"InProgress\" " . ($task['status'] === 'InProgress' ? 'selected' : '') . ">In uitvoering</option>
@@ -57,5 +68,44 @@ class TasksController
         ";
     }
 
-    public static function newTask() {}
+    public static function newTask($taskName, $description, $deadline)
+    {
+        require_once(__DIR__ . '/../../Models/Tasks.php');
+        require_once(__DIR__ . '/../../Models/Status.php');
+        $task = new Tasks(Tasks::getNewId());
+
+        $task->setTask($taskName);
+        $task->setDescription($description);
+        $task->setDeadline($deadline);
+        $task->setStatus(Status::NotStarted);
+
+        $task->save();
+        header("Location: ../../../public/index.php");
+        exit;
+    }
+
+    public static function editTask($id)
+    {
+        require_once(__DIR__ . '/../../../public/editTask.php');
+        $editTask = new editTask();
+        $editTask->set($id);
+    
+        header("Location: ../../../public/editTask.php?task_id=" . urlencode($id));
+        exit;
+    }
+
+    public static function saveEditTask($id, $task, $description, $deadline, $status) 
+    {
+        require_once(__DIR__ . '/../../Models/Tasks.php');
+        $tasks = new Tasks($id);
+
+        $tasks->setTask($task);
+        $tasks->setDescription($description);
+        $tasks->setDeadline($deadline);
+        $tasks->setStatus($status);
+
+        $tasks->save();
+        header("Location: ../../../public/index.php");
+        exit;
+    }
 }

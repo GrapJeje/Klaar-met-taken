@@ -74,23 +74,33 @@ class Tasks
     }
 
     public function save()
-    {
-        require_once __DIR__ . '/../../vendor/autoload.php';
+{
+    require_once __DIR__ . '/../../vendor/autoload.php';
 
-        $newTask = [
-            "{$this->getId()}",
-            "{$this->getTask()}",
-            "{$this->getDescription()}",
-            "{$this->getDeadline()}",
-            "{$this->getStatus()->name}"
-        ];
+    $newTask = [
+        "{$this->getId()}",
+        "{$this->getTask()}",
+        "{$this->getDescription()}",
+        "{$this->getDeadline()}",
+        "{$this->getStatus()->name}"
+    ];
 
-        $csvFilePath = __DIR__ . '/../../data/Tasks.csv';
+    $csvFilePath = __DIR__ . '/../../data/Tasks.csv';
+    $tasks = file_exists($csvFilePath) ? array_map('str_getcsv', file($csvFilePath)) : [];
 
-        $csv = Writer::createFromPath($csvFilePath, 'a');
-        $csv->insertOne($newTask);
+    $updated = false;
+    foreach ($tasks as &$task) {
+        if ($task[0] == $this->getId()) {
+            $task = $newTask;
+            $updated = true;
+            break;
+        }
     }
+    if (!$updated) $tasks[] = $newTask;
 
+    $csv = Writer::createFromPath($csvFilePath, 'w');
+    $csv->insertAll($tasks);
+}
 
     public static function getNewId()
     {
